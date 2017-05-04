@@ -123,5 +123,5 @@ def keywords_all(filename):
     top_10_sorted_keyword = collections.Counter(sorted_keyword).most_common(10)
     return dict(top_10_sorted_keyword)
 
-keywords_with_word_count('sample2')
-keywords_with_timestamps('sample2')
+#keywords_with_word_count('sample2')
+#keywords_with_timestamps('sample2')
