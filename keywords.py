@@ -52,7 +52,7 @@ def keywords_with_timestamps(filename):
         json_file = open(filename+'.json').read()
         json_data = json.loads(json_file)
         json_keywords = json_data['words'] #List of json
-        ts_json = {}
+        #ts_json = {}
 
         # Extract top 10 keywords
         keywords_wc = keywords_all(filename+'.txt') #Dictionary
@@ -60,7 +60,8 @@ def keywords_with_timestamps(filename):
         # Created the require output
         result_json_value = []
         for ele in keywords_wc.items():
-            ts_values = []
+            ts_json = {}
+	    ts_values = []
             for key in json_keywords:
                 if ele[0] == key['name']:
                     ts_values.append(key['time'])
@@ -122,5 +123,5 @@ def keywords_all(filename):
     top_10_sorted_keyword = collections.Counter(sorted_keyword).most_common(10)
     return dict(top_10_sorted_keyword)
 
-#keywords_with_word_count('sample2')
-#keywords_with_timestamps('sample2')
+keywords_with_word_count('sample2')
+keywords_with_timestamps('sample2')
