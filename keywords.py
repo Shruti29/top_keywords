@@ -90,7 +90,7 @@ def keywords_all(filename):
     f = open(filename, 'r')
     result = []
     wlem = WordNetLemmatizer()
-    stop = stopwords.words('english') + list(string.punctuation)
+    stop = stopwords.words('english') + list(string.punctuation) + ['via', 'blah', 'rt', 'etc', 'eg', 'ex', 'btw', 'bn', 'omg', 'bfg', 'ftw', 'wtf', 'lol', 'bff', 'aka', 'hi', 'bye', 'thanks', 'hello', 'morning', 'night', 'day', 'tomorrow', 'meeting', 'email', 'recording', 'demo']
     # Remove stop words and pronouns and articles
     result_tagged = []
     for line in f.readlines():
