@@ -26,38 +26,38 @@ def get_lemmatize_pos(tag):
     else:
         return ''
 
-def keywords_with_word_count(filename):
-    if os.path.isfile(filename+'.json') and os.path.isfile(filename+'.txt'):
+def keywords_with_word_count(input_filename, output_filename):
+    if os.path.isfile(input_filename+'.json') and os.path.isfile(input_filename+'.txt'):
         # To prevent unicode errors
         reload(sys)
         sys.setdefaultencoding("utf-8")
 
         # Extract top 10 keywords from text file
-        keywords_wc = keywords_all(filename+'.txt')
+        keywords_wc = keywords_all(input_filename+'.txt')
         value = map(list, keywords_wc.items())
         value = sorted(value, key = lambda x: int(x[1]), reverse=True)
         wc_json = {}
         wc_json['data'] = value
 
         # Write to output file
-        with open(filename+'.wc.json', 'w') as output_file:
+        with open(output_filename+'.wc.json', 'w') as output_file:
             json.dump(wc_json, output_file)
 
 
-def keywords_with_timestamps(filename):
-    if os.path.isfile(filename+'.json') and os.path.isfile(filename+'.txt'):
+def keywords_with_timestamps(input_filename, output_filename):
+    if os.path.isfile(input_filename+'.json') and os.path.isfile(input_filename+'.txt'):
         # To prevent unicode errors
         reload(sys)
         sys.setdefaultencoding("utf-8")
 
         # Read json input file
-        json_file = open(filename+'.json').read()
+        json_file = open(input_filename+'.json').read()
         json_data = json.loads(json_file)
         json_keywords = json_data['words'] #List of json
         ts_json = {}
 
         # Extract top 10 keywords
-        keywords_wc = keywords_all(filename+'.txt') #Dictionary
+        keywords_wc = keywords_all(input_filename+'.txt') #Dictionary
 
         # Created the require output
         result_json_value = []
@@ -78,7 +78,7 @@ def keywords_with_timestamps(filename):
         result_json['data'] = result_json_value
 
         #Write to the output file
-        with open(filename+'.ts.json', 'w') as output_file:
+        with open(output_filename+'.ts.json', 'w') as output_file:
             json.dump(result_json, output_file)
 
 
@@ -97,6 +97,7 @@ def keywords_all(filename):
         if not line.startswith("SPEAKER:"):
             line = unicode(line, errors='ignore')
             line = ' '.join([wrd for wrd in wordpunct_tokenize(line) if len(wrd) > 1])
+            #line = ' '.join([wrd for wrd in word_tokenize(line) if len(wrd) > 1])
             line = regexp_tokenize(line, pattern='\w+')
             result_tagged.append(pos_tag(line))
 
@@ -104,6 +105,7 @@ def keywords_all(filename):
     result_stoplist=[]
     for line in result_tagged:
         for l in line:
+            #if l[1]=='FW' or l[1].startswith('N'):
             if l[1].startswith('N'):
                 result_stoplist.append(l)
 
@@ -112,6 +114,7 @@ def keywords_all(filename):
     for ele in result_stoplist:
         if len(ele[1]) != 1:
             if get_lemmatize_pos(ele[1]) != '':
+            #print ele[0] + " " + wlem.lemmatize(ele[0], get_lemmatize_pos(ele[1]))
                 result_lemmatize.append(wlem.lemmatize(ele[0], get_lemmatize_pos(ele[1])))
             else:
                 result_lemmatize.append(ele[0])
@@ -127,8 +130,8 @@ def keywords_all(filename):
     sorted_keyword = OrderedDict(sorted(keyword_wc.items(), key=lambda x:x[1], reverse=True))
 
     # Return only the top 10 words
-    top_10_sorted_keyword = collections.Counter(sorted_keyword).most_common(40)
+    top_10_sorted_keyword = collections.Counter(sorted_keyword).most_common(50)
     return dict(top_10_sorted_keyword)
 
-#keywords_with_word_count('sample2')
-#keywords_with_timestamps('sample2')
+keywords_with_word_count('sample2', 'sample2_output')
+keywords_with_timestamps('sample2', 'sample2_output')
