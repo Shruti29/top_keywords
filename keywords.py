@@ -96,7 +96,7 @@ def keywords_all(filename):
     for line in f.readlines():
         if not line.startswith("SPEAKER:"):
             line = unicode(line, errors='ignore')
-            line = ' '.join([wrd for wrd in line if wrd not in stop])
+            line = ' '.join([wrd for wrd in line.split() if wrd not in stop])
             line = ' '.join([wrd for wrd in wordpunct_tokenize(line) if len(wrd) > 1])
             #line = ' '.join([wrd for wrd in word_tokenize(line) if len(wrd) > 1])
             line = regexp_tokenize(line, pattern='\w+')
