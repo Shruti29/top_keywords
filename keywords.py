@@ -90,7 +90,7 @@ def keywords_all(filename):
     f = open(filename, 'r')
     result = []
     wlem = WordNetLemmatizer()
-    stop = stopwords.words('english') + list(string.punctuation) + ['via', 'blah', 'rt', 'etc', 'eg', 'ex', 'btw', 'bn', 'omg', 'bfg', 'ftw', 'wtf', 'lol', 'bff', 'aka', 'hi', 'bye', 'thanks', 'hello', 'morning', 'night', 'day', 'tomorrow', 'meeting', 'email', 'recording', 'demo']
+    stop = stopwords.words('english') + list(string.punctuation) + ['via', 'blah', 'rt', 'etc', 'eg', 'ex', 'btw', 'bn', 'omg', 'bfg', 'ftw', 'wtf', 'lol', 'bff', 'aka', 'hi', 'bye', 'thanks', 'hello', 'morning', 'night', 'day', 'tomorrow', 'meeting', 'email', 'recording', 'demo', 'thing', 'so']
     # Remove stop words and pronouns and articles
     result_tagged = []
     for line in f.readlines():
@@ -130,7 +130,7 @@ def keywords_all(filename):
     sorted_keyword = OrderedDict(sorted(keyword_wc.items(), key=lambda x:x[1], reverse=True))
 
     # Return only the top 10 words
-    top_10_sorted_keyword = collections.Counter(sorted_keyword).most_common(50)
+    top_10_sorted_keyword = collections.Counter(sorted_keyword).most_common(15)
     return dict(top_10_sorted_keyword)
 
 #keywords_with_word_count('sample2', 'sample2_output')
