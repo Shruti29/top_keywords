@@ -90,13 +90,14 @@ def keywords_all(filename):
     f = open(filename, 'r')
     result = []
     wlem = WordNetLemmatizer()
-    stop = stopwords.words('english') + list(string.punctuation) + ['via', 'blah', 'rt', 'etc', 'eg', 'ex', 'btw', 'bn', 'omg', 'bfg', 'ftw', 'wtf', 'lol', 'bff', 'aka', 'hi', 'bye', 'thanks', 'hello', 'morning', 'night', 'day', 'tomorrow', 'meeting', 'email', 'recording', 'demo', 'thing', 'so']
+    stop = set(stopwords.words('english') + list(string.punctuation) + ['via', 'blah', 'rt', 'etc', 'eg', 'ex', 'btw', 'bn', 'omg', 'bfg', 'ftw', 'wtf', 'lol', 'bff', 'aka', 'hi', 'bye', 'thanks', 'hello', 'morning', 'night', 'day', 'tomorrow', 'meeting', 'email', 'recording', 'demo', 'thing', 'so'])
     # Remove stop words and pronouns and articles
     result_tagged = []
     for line in f.readlines():
         if not line.startswith("SPEAKER:"):
             line = unicode(line, errors='ignore')
-            line = ' '.join([wrd for wrd in line if wrd not in stop])
+            #print stop
+            #line = ' '.join([wrd for wrd in line.split() if wrd not in stop])
             line = ' '.join([wrd for wrd in wordpunct_tokenize(line) if len(wrd) > 1])
             #line = ' '.join([wrd for wrd in word_tokenize(line) if len(wrd) > 1])
             line = regexp_tokenize(line, pattern='\w+')
@@ -109,6 +110,7 @@ def keywords_all(filename):
             #if l[1]=='FW' or l[1].startswith('N'):
             if l[1].startswith('N'):
                 result_stoplist.append(l)
+
 
     #Lemmatize the extracted words
     result_lemmatize= []
